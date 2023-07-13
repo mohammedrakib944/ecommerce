@@ -2,26 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  h1 {
+    @apply text-3xl font-bold;
+  }
+  h2 {
+    @apply font-semibold text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  td {
+    @apply p-2;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .text_gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-900;
+  }
+  .logo_gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-primary;
+  }
+  .btn_blue {
+    @apply btn btn-sm bg-[#334fb4] hover:bg-blue-700 hover:shadow px-5 text-white rounded-full text-xs capitalize;
+  }
+  .btn_black {
+    @apply btn btn-sm bg-black hover:bg-gray-800 px-5 hover:shadow text-white rounded-full text-xs capitalize;
+  }
+  .btn_outline {
+    @apply btn btn-outline hover:bg-white hover:shadow-md hover:text-black w-full rounded-none;
+  }
+  .btn_sp {
+    @apply btn bg-black text-white hover:bg-black hover:shadow-md border-black w-full rounded-none;
+  }
+  .field_input {
+    @apply input input-bordered rounded-none;
+  }
 }
