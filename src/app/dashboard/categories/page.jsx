@@ -34,7 +34,7 @@ const Categories = () => {
               />
               <label className="font-semibold">Visible</label>
             </div>
-            <button className="btn btn-block bg-primary mt-4">Update</button>
+            <button className="btn_sp mt-4">Update</button>
           </div>
         </div>
       </div>

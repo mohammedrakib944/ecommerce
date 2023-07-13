@@ -77,6 +77,7 @@ const Products = () => {
                           <Image
                             src={Cartoon}
                             alt="Avatar Tailwind CSS Component"
+                            placeholder="blur"
                           />
                         </div>
                       </div>

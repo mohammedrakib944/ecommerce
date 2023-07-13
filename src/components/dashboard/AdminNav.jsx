@@ -32,7 +32,9 @@ const AdminNav = () => {
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="flex gap-2 cursor-pointer group">
             <div className="uppercase">
-              <h3 className="group-hover:text-gray-600">MD.Rakibuzzaman</h3>
+              <h3 className="group-hover:text-gray-600 text-sm font-semibold">
+                MD.Rakibuzzaman
+              </h3>
               <p className="text-xs float-right">(Admin)</p>
             </div>
             <Image

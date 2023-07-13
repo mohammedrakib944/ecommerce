@@ -42,7 +42,7 @@ const Customers = () => {
                 <option value="">Shipped</option>
                 <option value="">Deliverd</option>
               </select>
-              <button className="btn_main mt-4">Update</button>
+              <button className="btn_sp mt-4">Update</button>
             </div>
           </form>
         </div>
@@ -67,7 +67,7 @@ const Customers = () => {
           />
         </div>
         {/* TABLE */}
-        <div className="overflow-x-auto shadow">
+        <div className="overflow-x-auto shadow bg-white">
           <table className="table table-compact w-full">
             {/* head */}
             <thead>
@@ -93,12 +93,12 @@ const Customers = () => {
                 <td className="flex justify-end">
                   <label
                     htmlFor="customers-edit-modal"
-                    className="btn_small gap-2"
+                    className="btn_blue gap-2"
                   >
                     Details <BsChevronRight />
                   </label>
                   &nbsp;&nbsp;
-                  <button className="btn_small bg-red-600">
+                  <button className="btn_blue bg-red-600">
                     <MdDelete />
                   </button>
                 </td>
