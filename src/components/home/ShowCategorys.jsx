@@ -6,6 +6,7 @@ import { useGetProductsQuery } from "@/redux/features/products/productApi";
 import { useDispatch } from "react-redux";
 import { setProducts } from "@/redux/features/products/productSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { BiErrorCircle } from "react-icons/bi";
 
 const ShowCategorys = () => {
   const dispatch = useDispatch();
@@ -16,16 +17,22 @@ const ShowCategorys = () => {
     data: response,
     isSuccess,
     error,
+    isLoading: productLoading,
   } = useGetProductsQuery({ search }, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
     if (isSuccess && response) {
       dispatch(setProducts(response.products));
     }
-    if (error) {
-      toast.error("No products found!");
-    }
-  }, [isSuccess, error]);
+  }, [isSuccess]);
+
+  if (error && !productLoading)
+    return (
+      <div className="alert alert-error mt-3">
+        <BiErrorCircle />
+        <span>Could not get any product!</span>
+      </div>
+    );
 
   return (
     <div>
