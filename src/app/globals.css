@@ -34,9 +34,21 @@
     @apply btn btn-outline hover:bg-white hover:shadow-md hover:text-black w-full rounded-none;
   }
   .btn_sp {
-    @apply btn bg-black text-white hover:bg-black hover:shadow-md border-black w-full rounded-none;
+    @apply btn bg-black text-white hover:bg-black hover:shadow-md border-black w-full rounded-none disabled:cursor-default;
   }
   .field_input {
     @apply input input-bordered rounded-none;
+  }
+  .profile_inputs {
+    @apply min-w-[300px] border py-1 font-semibold outline-gray-200 px-2;
+  }
+  .badge_green {
+    @apply badge bg-green-500 text-white text-xs p-2;
+  }
+  .badge_blue {
+    @apply badge bg-blue-600 text-white text-xs p-2;
+  }
+  .badge_red {
+    @apply badge bg-red-500 text-white text-xs p-2;
   }
 }

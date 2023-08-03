@@ -1,9 +1,9 @@
-import AdminLayout from "@/components/dashboard/AdminLayout";
+"use client";
 import Link from "next/link";
 
 const Settings = () => {
   return (
-    <AdminLayout>
+    <div>
       <div className="text-sm breadcrumbs">
         <ul>
           <li>
@@ -63,7 +63,7 @@ const Settings = () => {
           </button>
         </form>
       </div>
-    </AdminLayout>
+    </div>
   );
 };
 

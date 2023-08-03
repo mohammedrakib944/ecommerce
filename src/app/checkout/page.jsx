@@ -3,23 +3,59 @@ import ClientLayout from "@/components/common/ClientLayout";
 import { AiOutlineShoppingCart, AiFillQuestionCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useUpdateUserMutation } from "@/redux/features/user/userApi";
+import toast, { Toaster } from "react-hot-toast";
 
 const page = () => {
+  const user = useSelector((state) => state.user);
+  const order = useSelector((state) => state.order);
   const router = useRouter();
+  const [updateUser, { isLoading, isSuccess, error }] = useUpdateUserMutation();
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("Here is data: ", data);
-    router.push("/paynow");
+    if (user.email) {
+      // phone, address, city, postal_code;
+      const { name, phone, city, postal_code, address, ...rest } = data;
+      const updatingData = {
+        name,
+        phone,
+        city,
+        postal_code,
+        address,
+      };
+      updateUser({ user_id: user._id, data: updatingData });
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.data?.message);
+    }
+    if (isSuccess) {
+      router.push("/profile");
+    }
+  }, [isSuccess, error]);
+
+  useEffect(() => {
+    if (user) {
+      reset(user);
+    }
+    if (!order.total_price) {
+      router.push("/profile");
+    }
+  }, [user, order]);
 
   return (
     <ClientLayout>
+      <Toaster position="bottom-center" />
       <div className="grid gap-4 lg:gap-8 lg:grid-cols-6 py-6">
         {/* Order summery */}
         <div className="col-span-2 h-fit p-4 rounded-lg border mt-8">
@@ -30,19 +66,21 @@ const page = () => {
             <table>
               <tbody className="text-sm">
                 <tr className="border-b">
-                  <td className="pr-8">Products Price</td>
-                  <td className="pl-8">$1100 USD</td>
-                </tr>
-                <tr className="border-b">
                   <td className="pr-8 flex items-center gap-2">
-                    Shipping
+                    Shipping Cost
                     <a>
                       <AiFillQuestionCircle />
                     </a>
                   </td>
-                  <td className="pl-8">$10 USD</td>
+                  <td className="pl-8">${order?.shipping_cost}.00 USD</td>
                 </tr>
-                <tr className="border-b">
+                <tr className="font-bold">
+                  <td className="pr-8">Total Price</td>
+                  <td className="pl-8 min-w-[280px]">
+                    ${order?.total_price}.00 USD
+                  </td>
+                </tr>
+                {/* <tr className="border-b">
                   <td className="pr-8 flex items-center gap-2">
                     Duties & Taxes
                     <a>
@@ -50,11 +88,7 @@ const page = () => {
                     </a>
                   </td>
                   <td className="pl-8">$2 USD</td>
-                </tr>
-                <tr className="font-bold">
-                  <td className="pr-8">Sub Total</td>
-                  <td className="pl-2">$1112.98 USD</td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
           </div>
@@ -62,7 +96,7 @@ const page = () => {
 
         {/* Delivery Details */}
         <div className="col-span-4">
-          <h3 className="font-bold mb-3">Delivery Details</h3>
+          <h3 className="font-bold mb-3">Check Details</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-2 mb-2">
               <span className="text-xs">Name</span>
@@ -80,6 +114,7 @@ const page = () => {
             <div className="flex flex-col gap-2 mb-2">
               <span className="text-xs">Email</span>
               <input
+                disabled
                 className="field_input"
                 placeholder="abdulkarim@gmail.com"
                 {...register("email", {
@@ -121,12 +156,12 @@ const page = () => {
               <input
                 className="field_input"
                 placeholder="XXXX"
-                {...register("postal", {
+                {...register("postal_code", {
                   required: "Postal is required!",
                 })}
               />
               <span className="text-xs text-red-500">
-                {errors?.postal?.message}
+                {errors?.postal_code?.message}
               </span>
             </div>
             <div className="flex flex-col gap-2 mb-2">
@@ -142,8 +177,8 @@ const page = () => {
                 {errors?.address?.message}
               </span>
             </div>
-            <button type="submit" className="btn_sp mt-3">
-              Place Order
+            <button disabled={isLoading} type="submit" className="btn_sp mt-3">
+              Go profile and Pay
             </button>
           </form>
         </div>

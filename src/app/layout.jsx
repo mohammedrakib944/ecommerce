@@ -1,5 +1,7 @@
+import ReduxProvider from "@/redux/provider";
 import "./globals.css";
-import AuthProvider from "@/components/common/AuthProvider";
+import AuthProvider from "@/hooks/AuthProvider";
+import UserProvider from "@/hooks/UserProvider";
 
 export const metadata = {
   title: "ER.com",
@@ -10,7 +12,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <ReduxProvider>
+          <AuthProvider>
+            <UserProvider>{children}</UserProvider>
+          </AuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

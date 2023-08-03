@@ -1,56 +1,70 @@
 "use client";
 
-import {
-  BsCheck2All,
-  BsFillHandbagFill,
-  BsFillShiftFill,
-} from "react-icons/bs";
-import { AiFillSetting } from "react-icons/ai";
+import { BsCheck2All, BsFillShiftFill } from "react-icons/bs";
+import { AiFillSetting, AiOutlineArrowLeft } from "react-icons/ai";
 import { MdDeliveryDining } from "react-icons/md";
 import { useEffect, useState } from "react";
 import ClientLayout from "@/components/common/ClientLayout";
+import { useGetSingleOrderQuery } from "@/redux/features/order/orderApi";
+import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
 
-const Status = () => {
+const Status = ({ params }) => {
+  const { data, error } = useGetSingleOrderQuery(params?.order_id, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  //["pending", "processing", "shipped", "delivered"],
+
   const [progress, setProgress] = useState(0);
-  const [currentStatus, setCurrentStatus] = useState(null);
-  const OrderStatus = [
-    "Confirmed Order",
-    "Processing",
-    "Handover",
-    "Shifted",
-    "Delivered",
-  ];
 
-  const changeProgress = () => {
-    if (currentStatus === "Confirmed Order") {
-      setProgress(20);
-    }
-    if (currentStatus === "Processing") {
-      setProgress(40);
-    }
-    if (currentStatus === "Handover") {
-      setProgress(60);
-    }
-    if (currentStatus === "Shifted") {
-      setProgress(80);
-    }
-    if (currentStatus === "Delivered") {
-      setProgress(100);
-    }
-  };
+  const OrderStatus = ["pending", "processing", "shipped", "delivered"];
 
   useEffect(() => {
-    changeProgress();
-  }, [currentStatus]);
+    if (error) {
+      toast.error(error.data?.message);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      const status = data.payload.status;
+      if (status === OrderStatus[0]) {
+        setProgress(20);
+      }
+      if (status === OrderStatus[1]) {
+        setProgress(40);
+      }
+      if (status === OrderStatus[2]) {
+        setProgress(60);
+      }
+      if (status === OrderStatus[3]) {
+        setProgress(80);
+      }
+      if (status === OrderStatus[4]) {
+        setProgress(100);
+      }
+    }
+  }, [data]);
 
   return (
     <ClientLayout>
+      <Toaster position="bottom-center" />
       <div className="py-8">
+        <Link
+          href="/profile"
+          className="text-blue-600 hover:underline flex items-center gap-2 w-fit"
+        >
+          <AiOutlineArrowLeft /> Profile
+        </Link>
+        <br />
+        <br />
         <h4 className="mb-2 font-semibold">
-          Your order ID <span className="text-blue-600">#38092301</span>
+          Your order ID{" "}
+          <span className="text-blue-600">#{params?.order_id}</span>
         </h4>
         <h4 className="font-semibold mt-3">
-          Status: <span className="text-success">{currentStatus}</span>
+          Status: <span className="text-success">{data?.payload?.status}</span>
         </h4>
         <div className="relative mt-4">
           <progress
@@ -64,7 +78,7 @@ const Status = () => {
                 <span className="text-xl hidden md:block">
                   <BsCheck2All />
                 </span>
-                Confirmed Order
+                {OrderStatus[0]}
               </div>
             </div>
 
@@ -73,7 +87,7 @@ const Status = () => {
                 <span className="text-xl hidden md:block">
                   <AiFillSetting />
                 </span>
-                Processing
+                {OrderStatus[1]}
               </div>
             </div>
 
@@ -82,7 +96,7 @@ const Status = () => {
                 <span className="text-2xl hidden md:block">
                   <MdDeliveryDining />
                 </span>
-                On the way
+                {OrderStatus[2]}
               </div>
             </div>
 
@@ -91,16 +105,7 @@ const Status = () => {
                 <span className="text-xl hidden md:block">
                   <BsFillShiftFill />
                 </span>
-                Shifted
-              </div>
-            </div>
-
-            <div className="w-fit flex flex-col items-center">
-              <div className="font-semibold mt-2 text-xs md:text-sm flex gap-2 items-center">
-                <span className="text-lg hidden md:block">
-                  <BsFillHandbagFill />
-                </span>
-                Delivered
+                {OrderStatus[3]}
               </div>
             </div>
           </div>
@@ -108,21 +113,8 @@ const Status = () => {
 
         <br />
         <br />
-
-        <hr />
         <br />
-        <select
-          className="select select-bordered  w-full max-w-xs"
-          onChange={(e) => setCurrentStatus(e.target.value)}
-          defaultValue={"DEFAULT"}
-        >
-          <option value="DEFAULT" disabled>
-            Select Status
-          </option>
-          {OrderStatus.map((val, index) => (
-            <option key={index}>{val}</option>
-          ))}
-        </select>
+        <br />
       </div>
     </ClientLayout>
   );

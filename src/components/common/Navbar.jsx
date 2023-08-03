@@ -6,11 +6,42 @@ import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle } from "react-icons/bs";
 import { BiLogOutCircle } from "react-icons/bi";
 import Search from "../home/Search";
+import { useEffect, useState } from "react";
+import { useGetCartQuery } from "@/redux/features/cart/cartApi";
 
-const cardItem = 2;
+// redux
+import { useSelector } from "react-redux";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
 
 const Navbar = () => {
+  const user = useSelector((state) => state.user);
+  const [cartItem, setCartItem] = useState(0);
+  const { data: cartData } = useGetCartQuery(user?._id);
+  const [login] = useLoginMutation();
   const session = useSession();
+
+  // Sign in
+  const signInHandler = async () => {
+    await signIn("google");
+  };
+
+  // Insert user to Database
+  const insertUser = async (data) => {
+    login(data);
+  };
+
+  useEffect(() => {
+    if (cartData) {
+      setCartItem(cartData?.payload?.cart?.length);
+    }
+  }, [cartData]);
+
+  useEffect(() => {
+    if (session.data && !user.email) {
+      console.log("calling!");
+      insertUser(session.data.user);
+    }
+  }, [session]);
 
   return (
     <div className="sticky top-0 border-b border-gray-200 bg-white z-10">
@@ -48,28 +79,25 @@ const Navbar = () => {
               <span>
                 <AiOutlineShoppingCart />
               </span>
-              {cardItem > 0 && (
+              {cartItem > 0 && (
                 <span className="animate-ping absolute w-4 h-4 rounded-full text-center -top-3 -right-3 text-xs bg-blue-700 text-white"></span>
               )}
               <span className="w-4 h-4 rounded-full text-center absolute -top-3 -right-3 text-xs bg-black text-white">
-                {cardItem}
+                {cartItem}
               </span>
             </Link>
           )}
 
           {session.status === "unauthenticated" ? (
-            <button className="btn_black" onClick={() => signIn("google")}>
+            <button className="btn_black" onClick={signInHandler}>
               <FcGoogle /> Login with google
             </button>
           ) : (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} className="m-1 flex items-center gap-2">
-                <p className="text-sm font-semibold cursor-pointer hover:underline">
-                  {session?.data?.user?.name}
-                </p>
                 <img
                   className="w-[40px] h-[40px] rounded-full border cursor-pointer hover:shadow-md"
-                  src={session?.data?.user?.image}
+                  src={user?.image}
                   alt=""
                 />
               </div>
@@ -78,13 +106,19 @@ const Navbar = () => {
                 className="dropdown-content z-[1] menu p-2 border shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a className="gap-2">
+                  <Link href="/profile" className="gap-2">
                     <BsPersonCircle />
-                    Profile
-                  </a>
+                    {user?.name}
+                  </Link>
                 </li>
                 <li>
-                  <a className="gap-2" onClick={signOut}>
+                  <a
+                    className="gap-2"
+                    onClick={() => {
+                      localStorage.removeItem("auth");
+                      signOut();
+                    }}
+                  >
                     <BiLogOutCircle /> Logout
                   </a>
                 </li>

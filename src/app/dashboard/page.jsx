@@ -1,10 +1,11 @@
-import AdminLayout from "@/components/dashboard/AdminLayout";
+"use client";
+
 import { Dashboard_data } from "../../utils/data";
 import HomeChart from "@/components/dashboard/HomeChart";
 
 const index = () => {
   return (
-    <AdminLayout>
+    <div>
       <h2 className="mb-4">Dashboard</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Dashboard_data.map((item) => (
@@ -26,7 +27,7 @@ const index = () => {
       <div className="max-w-[900px] bg-white shadow rounded-lg p-4">
         <HomeChart />
       </div>
-    </AdminLayout>
+    </div>
   );
 };
 

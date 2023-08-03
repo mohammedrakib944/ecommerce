@@ -1,6 +1,6 @@
 "use client";
 import { MdLogout } from "react-icons/md";
-import { BiLeftArrowAlt } from "react-icons/bi";
+import { signOut } from "next-auth/react";
 import AdminNav from "./AdminNav";
 import Link from "next/link";
 import { SideLinks } from "./data";
@@ -8,6 +8,13 @@ import { usePathname } from "next/navigation";
 
 const AdminLayout = ({ children }) => {
   const pathname = usePathname();
+
+  const handleLogout = () => {
+    if (confirm("You want logout?")) {
+      localStorage.removeItem("auth");
+      signOut();
+    }
+  };
 
   return (
     <div className="drawer lg:drawer-open">
@@ -46,7 +53,10 @@ const AdminLayout = ({ children }) => {
             </li>
           ))}
           <li>
-            <a className="text-gray-300 hover:text-gray-100">
+            <a
+              onClick={handleLogout}
+              className="text-gray-300 hover:text-gray-100"
+            >
               <MdLogout /> Logout
             </a>
           </li>

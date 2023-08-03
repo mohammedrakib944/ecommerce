@@ -1,11 +1,13 @@
-import AdminLayout from "@/components/dashboard/AdminLayout";
+"use client";
 import { MdDelete, MdSearch } from "react-icons/md";
 import { BsChevronRight } from "react-icons/bs";
 import Link from "next/link";
+import { useGetAllUserQuery } from "@/redux/features/user/userApi";
 
 const Customers = () => {
+  const { data, isLoading, error } = useGetAllUserQuery();
   return (
-    <AdminLayout>
+    <div>
       {/* MODAL */}
       <input
         type="checkbox"
@@ -77,37 +79,38 @@ const Customers = () => {
                 <th>Email</th>
                 <th>Mobile</th>
                 <th>Address</th>
-                <th>Spent</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {/* row 1 */}
-              <tr>
-                <th>#412</th>
-                <td>Md.Tomal</td>
-                <td>tomal@gmail.com</td>
-                <td>018293912</td>
-                <td>Santhia Pabna</td>
-                <td>$209.18</td>
-                <td className="flex justify-end">
-                  <label
-                    htmlFor="customers-edit-modal"
-                    className="btn_blue gap-2"
-                  >
-                    Details <BsChevronRight />
-                  </label>
-                  &nbsp;&nbsp;
-                  <button className="btn_blue bg-red-600">
-                    <MdDelete />
-                  </button>
-                </td>
-              </tr>
+              {data &&
+                data?.payload?.users.map((user, index) => (
+                  <tr key={index}>
+                    <th>#{user.id}</th>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.address}</td>
+                    <td className="flex justify-end">
+                      <label
+                        htmlFor="customers-edit-modal"
+                        className="btn_blue gap-2"
+                      >
+                        Details <BsChevronRight />
+                      </label>
+                      &nbsp;&nbsp;
+                      <button className="btn_blue bg-red-600">
+                        <MdDelete />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
       </div>
-    </AdminLayout>
+    </div>
   );
 };
 

@@ -1,3 +1,4 @@
+"use client";
 import { BsArrowRight } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import {

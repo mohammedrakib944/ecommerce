@@ -1,40 +1,123 @@
 "use client";
-import AdminLayout from "@/components/dashboard/AdminLayout";
 import { MdEdit, MdDelete, MdSearch } from "react-icons/md";
 import Link from "next/link";
 import { useState } from "react";
 
+// redux
+import {
+  useGetCategoryQuery,
+  useAddCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} from "@/redux/features/category/categoryApi";
+import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
+
 const Categories = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const user = useSelector((state) => state.user);
+  const { data } = useGetCategoryQuery();
+  const [addCategory, { isLoading: adding }] = useAddCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
+  // states
+  const [category_name, setCategory_name] = useState("");
+  const [updateCategory_name, setUpdateCategory_name] = useState("");
+  const [status, setStatus] = useState("");
+  const [category_id, setcategory_id] = useState("");
+
+  // Add categroy
+  const handleAddCategory = async () => {
+    if (!user) return;
+
+    const sendData = {
+      user_id: user._id,
+      category_name,
+    };
+    try {
+      await addCategory(sendData);
+      toast.success("Category added!");
+      setCategory_name("");
+    } catch (error) {
+      toast.error("Category add error!");
+    }
+  };
+
+  // selected category
+  const handleSelectedCategory = async (categoryId) => {
+    if (data.payload) {
+      const selected = data.payload.category.filter(
+        (item) => item._id === categoryId
+      );
+      setUpdateCategory_name(selected[0].category_name);
+      setStatus(selected[0].status);
+      setcategory_id(categoryId);
+    }
+  };
+
+  // Update Category
+  const updateCategoryHandler = async () => {
+    if (!category_id) return;
+    try {
+      await updateCategory({
+        category_id,
+        data: { category_name: updateCategory_name, status },
+      });
+      toast.success("Category Updated!");
+      document.getElementById("hideEditModal").click();
+    } catch (error) {
+      toast.error("Category update error!");
+    }
+  };
+
+  // Delete category
+  const handleDeleteCategory = async (catagoryId) => {
+    if (!catagoryId) return;
+    if (!confirm("Do you want to delete?")) return;
+    try {
+      await deleteCategory(catagoryId);
+      toast.success("Category Deleted!");
+    } catch (error) {
+      toast.error("Delete error!");
+    }
+  };
+
   return (
-    <AdminLayout>
+    <div>
+      <Toaster position="bottom-center" />
       {/* MODAL */}
       <input type="checkbox" id="category-modal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
           <label
             htmlFor="category-modal"
+            id="hideEditModal"
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
           <h2>Edit category</h2>
           <div className="lg:col-span-2">
+            <p className="text-sm mt-4">Name</p>
             <input
               type="text"
-              className="input input-bordered w-full mt-4 shadow"
+              className="field_input w-full mt-2 shadow"
               placeholder="Edit category..."
+              onChange={(e) => setUpdateCategory_name(e.target.value)}
+              value={updateCategory_name}
             />
-            <div className="flex items-center gap-4 mt-4">
-              <input
-                type="checkbox"
-                checked={isVisible}
-                onChange={(e) => setIsVisible(e.currentTarget.checked)}
-                className="checkbox checkbox-primary"
-              />
-              <label className="font-semibold">Visible</label>
-            </div>
-            <button className="btn_sp mt-4">Update</button>
+            <p className="text-sm mt-4">Status</p>
+            <select
+              defaultValue={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="select field_input w-full mt-2"
+            >
+              <option value="show">show</option>
+              <option value="hide">hide</option>
+            </select>
+
+            <button onClick={updateCategoryHandler} className="btn_sp mt-4">
+              Update
+            </button>
           </div>
         </div>
       </div>
@@ -63,20 +146,20 @@ const Categories = () => {
         {/* ADD category */}
         <div className="lg:col-span-2">
           <input
+            required
+            value={category_name}
+            onChange={(e) => setCategory_name(e.target.value)}
             type="text"
-            className="input w-full shadow"
+            className="field_input w-full shadow"
             placeholder="Type new category..."
           />
-          <div className="flex items-center gap-4 mt-4">
-            <input
-              type="checkbox"
-              checked={isVisible}
-              onChange={(e) => setIsVisible(e.currentTarget.checked)}
-              className="checkbox checkbox-primary"
-            />
-            <label className="font-semibold">Visible</label>
-          </div>
-          <button className="btn_sp mt-4">Add catagory</button>
+          <button
+            disabled={adding}
+            onClick={handleAddCategory}
+            className="btn_sp mt-4"
+          >
+            Add catagory
+          </button>
         </div>
         <div className="lg:col-span-3 shadow bg-white overflow-x-auto">
           {/* Table */}
@@ -86,49 +169,47 @@ const Categories = () => {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Items</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>1</th>
-                <td>Mobile</td>
-                <td>18</td>
-                <td>
-                  <span className="badge_green">Visible</span>
-                </td>
-                <td className="flex justify-end gap-3">
-                  <label htmlFor="category-modal" className="btn_blue">
-                    <MdEdit />
-                  </label>
-                  <button className="btn_blue bg-red-700">
-                    <MdDelete />
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th>1</th>
-                <td>Laptop</td>
-                <td>4</td>
-                <td>
-                  <span className="badge_red">Hidden</span>
-                </td>
-                <td className="flex justify-end gap-3">
-                  <label htmlFor="category-modal" className="btn_blue">
-                    <MdEdit />
-                  </label>
-                  <button className="btn_blue bg-red-700">
-                    <MdDelete />
-                  </button>
-                </td>
-              </tr>
+              {data &&
+                data.payload.category.map((item, index) => (
+                  <tr key={index} className="font-semibold">
+                    <th>{index + 1}</th>
+                    <td>{item.category_name}</td>
+                    <td>
+                      <span
+                        className={
+                          item.status === "show" ? "badge_green" : "badge_red"
+                        }
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="flex justify-end gap-3">
+                      <label
+                        onClick={() => handleSelectedCategory(item._id)}
+                        htmlFor="category-modal"
+                        className="btn_blue"
+                      >
+                        <MdEdit />
+                      </label>
+                      <button
+                        onClick={() => handleDeleteCategory(item._id)}
+                        className="btn_blue bg-red-700"
+                      >
+                        <MdDelete />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
       </div>
-    </AdminLayout>
+    </div>
   );
 };
 

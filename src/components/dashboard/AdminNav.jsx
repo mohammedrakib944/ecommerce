@@ -1,10 +1,10 @@
 import { MdSearch, MdNotifications } from "react-icons/md";
 import { RiMenu2Fill } from "react-icons/ri";
-import Image from "next/image";
-import Avatar from "../../../public/images/avatar.png";
 import Badge from "../common/Badge";
+import { useSelector } from "react-redux";
 
 const AdminNav = () => {
+  const user = useSelector((state) => state.user);
   return (
     <div className="w-full bg-white shadow sticky top-0 px-6 py-4 flex items-center justify-between z-10">
       <div className="hidden lg:flex items-center gap-2 bg-gray-200 px-3 rounded-sm">
@@ -29,34 +29,19 @@ const AdminNav = () => {
           <Badge icon={<MdNotifications />} value="7" />
         </div>
 
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="flex gap-2 cursor-pointer group">
-            <div className="uppercase">
-              <h3 className="group-hover:text-gray-600 text-sm font-semibold">
-                MD.Rakibuzzaman
-              </h3>
-              <p className="text-xs float-right">(Admin)</p>
-            </div>
-            <Image
-              className="rounded-full border border-primary"
-              src={Avatar}
-              width={40}
-              height={40}
-              alt="Admin Image"
-            />
-          </label>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 border"
-          >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Item 2</a>
-            </li>
-          </ul>
+        <div>
+          <h3 className="group-hover:text-gray-600 text-sm font-semibold">
+            {user?.name}
+          </h3>
+          <p className="text-xs float-right">
+            {user?.is_admin ? "(Admin)" : "(User)"}
+          </p>
         </div>
+        <img
+          className="w-[40px] h-[40px] rounded-full border border-primary"
+          src={user?.image}
+          alt="Admin Image"
+        />
       </div>
     </div>
   );

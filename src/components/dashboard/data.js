@@ -4,6 +4,7 @@ import {
   MdShoppingCart,
   MdPeopleAlt,
   MdSettings,
+  MdImage,
 } from "react-icons/md";
 import { TbCategory } from "react-icons/tb";
 
@@ -18,6 +19,11 @@ export const SideLinks = [
     name: "Products",
     icon: <MdStorage />,
     link: "/products",
+  },
+  {
+    name: "Photos",
+    icon: <MdImage />,
+    link: "/photos",
   },
   {
     name: "Categories",
