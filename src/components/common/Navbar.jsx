@@ -71,24 +71,25 @@ const Navbar = () => {
           <Search />
         </div>
         <div className="navbar-end gap-7 text-xl">
-          {session.status === "authenticated" && (
-            <Link
-              href="/cart"
-              className="relative cursor-pointer hover:text-blue-600"
-            >
-              <span>
-                <AiOutlineShoppingCart />
-              </span>
-              {cartItem > 0 && (
-                <span className="animate-ping absolute w-4 h-4 rounded-full text-center -top-3 -right-3 text-xs bg-blue-700 text-white"></span>
-              )}
-              <span className="w-4 h-4 rounded-full text-center absolute -top-3 -right-3 text-xs bg-black text-white">
-                {cartItem}
-              </span>
-            </Link>
-          )}
+          <Link
+            href="/cart"
+            className="relative cursor-pointer hover:text-blue-600"
+          >
+            <span>
+              <AiOutlineShoppingCart />
+            </span>
+            {cartItem > 0 && (
+              <span className="animate-ping absolute w-4 h-4 rounded-full text-center -top-3 -right-3 text-xs bg-blue-700 text-white"></span>
+            )}
+            <span className="w-4 h-4 rounded-full text-center absolute -top-3 -right-3 text-xs bg-black text-white">
+              {cartItem}
+            </span>
+          </Link>
 
-          {session.status === "unauthenticated" ? (
+          <Link href="/login">
+            <button className="btn_black">Login</button>
+          </Link>
+          {/* {session.status === "unauthenticated" ? (
             <button className="btn_black" onClick={signInHandler}>
               <FcGoogle /> Login with google
             </button>
@@ -124,7 +125,7 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

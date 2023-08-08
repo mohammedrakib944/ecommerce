@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Cover from "../../../public/cover/Cover.jpg";
 import Cover2 from "../../../public/cover/Cover2.jpg";
-import Cover3 from "../../../public/cover/Cover3.jpg";
+import Cover3 from "../../../public/cover/Coverl.jpg";
 
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { API_URL } from "@/redux/features/api/apiSlice";
 import "@splidejs/react-splide/css";
 
 const Banner = () => {
@@ -22,8 +21,8 @@ const Banner = () => {
       <SplideSlide>
         <Image
           width="960"
-          height="240"
-          className="w-full h-[220px] object-cover"
+          height="300"
+          className="w-full h-[300px] object-cover"
           src={Cover}
           alt="Image 1"
         />
@@ -31,19 +30,19 @@ const Banner = () => {
       <SplideSlide>
         <Image
           width="960"
-          height="240"
-          className="w-full h-[220px] object-cover"
+          height="300"
+          className="w-full h-[300px] object-cover"
           src={Cover2}
-          alt="Image 1"
+          alt="Image 2"
         />
       </SplideSlide>
       <SplideSlide>
         <Image
           width="960"
-          height="240"
-          className="w-full h-[220px] object-cover"
+          height="300"
+          className="w-full h-[300px] object-cover"
           src={Cover3}
-          alt="Image 1"
+          alt="Image 3"
         />
       </SplideSlide>
     </Splide>

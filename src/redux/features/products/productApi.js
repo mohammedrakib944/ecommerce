@@ -5,14 +5,14 @@ export const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // get all products
     getProducts: builder.query({
-      query: ({ search, page = 1 }) => ({
-        url: `/api/products?search=${search}&page=${page}`,
+      query: ({ search }) => ({
+        url: `/products/${search}`,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
           //update redux store
-          dispatch(setProducts(result.data.payload.products));
+          dispatch(setProducts(result.data));
         } catch (error) {
           // do nothing
         }

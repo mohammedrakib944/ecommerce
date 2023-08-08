@@ -1,25 +1,22 @@
 "use client";
+import Spinner from "../common/Spinner";
 import { useGetProductsQuery } from "@/redux/features/products/productApi";
 import ProductCard from "../common/ProductCard";
-import Spinner from "../common/Spinner";
-import { useSelector } from "react-redux";
 
-const ShowProducts = () => {
-  const products = useSelector((state) => state.product);
-  const { isLoading } = useGetProductsQuery(
-    { search: "" },
-    {
-      refetchOnMountOrArgChange: true,
-    }
+const SimilarProducts = ({ category }) => {
+  const { data: products, isLoading } = useGetProductsQuery(
+    { search: `category/${category}` },
+    { refetchOnMountOrArgChange: true }
   );
 
   return (
-    <div>
+    <div className="mt-8">
+      <h3>Similar Products</h3>
       {isLoading ? (
-        <Spinner title="Products Loading..." />
+        <Spinner title="Loading..." />
       ) : (
         <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center md:place-items-stretch gap-2">
-          {products.length > 0 &&
+          {products &&
             products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -29,4 +26,4 @@ const ShowProducts = () => {
   );
 };
 
-export default ShowProducts;
+export default SimilarProducts;

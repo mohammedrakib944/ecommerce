@@ -14,15 +14,18 @@ const ShowCategorys = () => {
   const [search, setSearch] = useState("");
   // get products by category
   const {
-    data: response,
+    data: products,
     isSuccess,
     error,
     isLoading: productLoading,
-  } = useGetProductsQuery({ search }, { refetchOnMountOrArgChange: true });
+  } = useGetProductsQuery(
+    { search: `${search}` },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
-    if (isSuccess && response) {
-      dispatch(setProducts(response.products));
+    if (isSuccess && products) {
+      dispatch(setProducts(products.products));
     }
   }, [isSuccess]);
 
@@ -39,7 +42,7 @@ const ShowCategorys = () => {
       <Toaster position="bottom-center" />
       <div className="flex flex-wrap gap-2 mt-4">
         <div
-          onClick={() => setSearch("")}
+          onClick={() => setSearch("/")}
           className="w-fit cursor-pointer px-5 py-3 font-semibold text-sm border border-black hover:bg-black hover:text-white duration-200"
         >
           All
@@ -48,14 +51,15 @@ const ShowCategorys = () => {
           <Spinner title="Category Loading..." />
         ) : (
           data &&
-          data.payload.category.map((category) => (
-            <div
-              onClick={() => setSearch(category.category_name)}
-              key={category._id}
-              className="w-fit cursor-pointer px-5 py-3 font-semibold text-sm border border-black hover:bg-black hover:text-white duration-200"
+          data.map((category) => (
+            <button
+              disabled={productLoading}
+              onClick={() => setSearch(`category/${category}`)}
+              key={category}
+              className="w-fit cursor-pointer px-5 py-3 font-semibold text-sm border border-black hover:bg-black hover:text-white duration-200 disabled:opacity-30"
             >
-              {category.category_name}
-            </div>
+              {category}
+            </button>
           ))
         )}
       </div>
