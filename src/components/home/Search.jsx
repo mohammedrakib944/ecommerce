@@ -1,37 +1,15 @@
-import { AiOutlineSearch } from "react-icons/ai";
-import { useEffect, useState } from "react";
-// redux
-import { useGetProductsQuery } from "@/redux/features/products/productApi";
-import { useDispatch } from "react-redux";
-import { setProducts } from "@/redux/features/products/productSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Search = () => {
-  const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
-  // get products by category
-  const {
-    data: response,
-    isSuccess,
-    error,
-  } = useGetProductsQuery({ search }, { refetchOnMountOrArgChange: true });
-
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearch(e.target[0].value);
+    toast.error("No item found!");
   };
-
-  useEffect(() => {
-    if (isSuccess && response) {
-      dispatch(setProducts(response.products));
-    }
-    if (error) {
-      toast.error("No products found!");
-    }
-  }, [isSuccess, error]);
 
   return (
     <div className="max-w-[360px] mx-auto">
+      <Toaster position="bottom-center" />
       <form onSubmit={handleSearch}>
         <div className="bg-white min-w-full rounded-full overflow-hidden text-sm border border-gray-500 hover:border-black flex items-center justify-between hover:shadow-lg duration-200 ">
           <input

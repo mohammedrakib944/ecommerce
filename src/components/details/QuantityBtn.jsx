@@ -21,7 +21,7 @@ const QuantityBtn = ({ quantity, setQuantity, stock }) => {
       >
         <AiOutlineMinus />
       </button>
-      <span>{quantity}</span>
+      <span>{quantity || 0}</span>
       <button
         disabled={quantity >= stock ? true : false}
         className="p-3 text-sm"

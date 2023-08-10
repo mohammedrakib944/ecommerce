@@ -69,9 +69,9 @@ const Navbar = () => {
             {cartItems.length > 0 && (
               <span className="animate-ping absolute w-4 h-4 rounded-full text-center -top-3 -right-3 text-xs bg-blue-700 text-white"></span>
             )}
-            <span className="w-4 h-4 rounded-full text-center absolute -top-3 -right-3 text-xs bg-black text-white">
-              {cartItems?.length}
-            </span>
+            <p className="w-4 h-4 rounded-full text-center absolute -top-3 -right-3 text-xs bg-black text-white">
+              {cartItems?.length || 0}
+            </p>
           </Link>
 
           <Link href="/login">
