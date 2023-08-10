@@ -15,26 +15,14 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 
 const Navbar = () => {
   const user = useSelector((state) => state.user);
-  const [cartItem, setCartItem] = useState(0);
-  const { data: cartData } = useGetCartQuery(user?._id);
+  const cartItems = useSelector((state) => state.cart);
   const [login] = useLoginMutation();
   const session = useSession();
-
-  // Sign in
-  const signInHandler = async () => {
-    await signIn("google");
-  };
 
   // Insert user to Database
   const insertUser = async (data) => {
     login(data);
   };
-
-  useEffect(() => {
-    if (cartData) {
-      setCartItem(cartData?.payload?.cart?.length);
-    }
-  }, [cartData]);
 
   useEffect(() => {
     if (session.data && !user.email) {
@@ -78,11 +66,11 @@ const Navbar = () => {
             <span>
               <AiOutlineShoppingCart />
             </span>
-            {cartItem > 0 && (
+            {cartItems.length > 0 && (
               <span className="animate-ping absolute w-4 h-4 rounded-full text-center -top-3 -right-3 text-xs bg-blue-700 text-white"></span>
             )}
             <span className="w-4 h-4 rounded-full text-center absolute -top-3 -right-3 text-xs bg-black text-white">
-              {cartItem}
+              {cartItems?.length}
             </span>
           </Link>
 

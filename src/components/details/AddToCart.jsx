@@ -5,18 +5,37 @@ import QuantityBtn from "./QuantityBtn";
 import { useState } from "react";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
+// redux
+import { useDispatch } from "react-redux";
+import { setCartItems } from "@/redux/features/cart/cartSlice";
+
+function generateUniqueId() {
+  let id = (Math.random() * Date.now()) / 1e6;
+  return Math.round(id);
+}
 
 const AddToCart = ({ productId = null }) => {
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   const handleAddToCart = async () => {
     const savingData = {
-      user_id: 691,
+      id: generateUniqueId(),
       productId,
       quantity,
     };
-
-    console.log(savingData);
+    // save data to local storage
+    const prevItems = JSON.parse(localStorage.getItem("cart_items"));
+    let data = [];
+    if (prevItems) {
+      data = prevItems;
+      data.push(savingData);
+    } else {
+      data.push(savingData);
+    }
+    localStorage.setItem("cart_items", JSON.stringify(data));
+    dispatch(setCartItems());
+    toast.success("Item added!");
   };
 
   return (
