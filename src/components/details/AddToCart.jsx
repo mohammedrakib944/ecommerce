@@ -3,7 +3,6 @@
 import { AiOutlineShoppingCart, AiOutlineWarning } from "react-icons/ai";
 import QuantityBtn from "./QuantityBtn";
 import { useState } from "react";
-import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 // redux
 import { useDispatch } from "react-redux";

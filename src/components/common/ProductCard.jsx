@@ -59,10 +59,7 @@ const ProductCard = ({ product }) => {
             <p className="mt-1">
               Price <span className="font-bold">${product?.price}</span>
             </p>
-            <FixedRating
-              rate={product?.rating?.rate}
-              count={product?.rating?.count}
-            />
+            <FixedRating rate={product?.rating?.rate} />
           </div>
         </div>
         {/* <div className="mt-2 flex gap-2 items-center">

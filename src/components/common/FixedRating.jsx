@@ -6,14 +6,14 @@ const FixedRating = ({ rate, count }) => {
   return (
     <div className="flex items-center gap-1 pt-1">
       <Rating
-        className="mt-1 text-orange-500"
+        className="mt-1"
         emptySymbol={<AiOutlineStar />}
         fullSymbol={<AiFillStar />}
         initialRating={rate}
         readonly
       />
       <span className="text-xs">{rate}</span>
-      <span className="text-xs">({count})</span>
+      <span className="text-xs">{count && "(" + count + ")"}</span>
     </div>
   );
 };
