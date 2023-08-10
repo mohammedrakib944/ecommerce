@@ -40,6 +40,7 @@ const AddToCart = ({ productId = null }) => {
 
   return (
     <div>
+      <Toaster position="bottom-center" />
       <div>
         <div className="mt-4">
           <h4 className="text-sm font-semibold mt-3">Quantity</h4>
@@ -51,7 +52,6 @@ const AddToCart = ({ productId = null }) => {
         </div>
 
         <div className="mt-8">
-          <Toaster position="bottom-center" />
           <button className="btn_outline gap-2" onClick={handleAddToCart}>
             <AiOutlineShoppingCart />
             Add to cart
@@ -59,7 +59,12 @@ const AddToCart = ({ productId = null }) => {
         </div>
 
         <div className="mt-3">
-          <button className="btn_sp cursor-not-allowed">Buy it now</button>
+          <button
+            className="btn_sp cursor-not-allowed"
+            onClick={() => toast.error("Login required!")}
+          >
+            Buy it now
+          </button>
         </div>
       </div>
     </div>

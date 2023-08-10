@@ -25,7 +25,6 @@ const UserProvider = ({ children }) => {
     }
 
     if (!user.email && userId && session.status === "authenticated") {
-      console.log("User Fetching...");
       setFetchUserFlag(true);
     }
   }, [userId, session]);

@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
   }, [isSuccess, error]);
 
   return (
-    <div className="min-w-[180px] max-w-[320px] group border overflow-hidden">
+    <div className="w-full min-w-[180px] max-w-[320px] group border overflow-hidden">
       <Toaster position="bottom-center" />
       <Link href={`/details/${product?.id}`}>
         <img
@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
               {product?.title?.length > 40 && "..."}
             </Link>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <p className="mt-1">
               Price <span className="font-bold">${product?.price}</span>
             </p>

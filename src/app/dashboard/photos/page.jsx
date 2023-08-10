@@ -84,7 +84,6 @@ const Photos = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("success...");
       refetch();
       document.getElementById("cancleModal").click();
       toast.success("Images uploaded success!");

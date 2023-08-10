@@ -23,7 +23,7 @@ const Details = async ({ params }) => {
     <ClientLayout>
       <div className="mt-8">
         <div className="grid md:grid-cols-5 gap-8">
-          <div className="col-span-3">
+          <div className="md:col-span-3">
             {/* Slide show */}
             <div className="border p-4 flex items-center justify-center">
               <img
@@ -33,7 +33,7 @@ const Details = async ({ params }) => {
               />
             </div>
           </div>
-          <div className="col-span-2">
+          <div className="md:col-span-2 w-full">
             <h2>{product?.title}</h2>
             <FixedRating
               rate={product?.rating?.rate}

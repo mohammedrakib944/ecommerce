@@ -30,7 +30,6 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    console.log(cart_items);
     if (cart_items) {
       let price = 0;
       cart_items.map((item) => {
