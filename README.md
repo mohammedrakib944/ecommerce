@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Hi, I'm <a href="https://github.com/mohammedrakib944"><h5>Rakib</h5></a>. This is my another project, front-end for ecommerce web application. 
+Build with <h5> Next.js 13</h5/> with app router.
 
 ## Getting Started
 
